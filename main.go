@@ -10,14 +10,31 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+type stage string
+
+// stage enum
+const (
+	Commit           stage = "commit"
+	MergeCommit            = "merge-commit"
+	Push                   = "push"
+	PrepareCommitMsg       = "prepare-commit-msg"
+	CommitMsg              = "commit-msg"
+	PostCheckout           = "post-checkout"
+	PostCommit             = "post-commit"
+	PostMerge              = "post-merge"
+	PostRewrite            = "post-rewrite"
+	Manual                 = "manual"
+)
+
 type hook struct {
-	ID            string `yaml:"id"`
-	Name          string `yaml:"name"`
-	Entry         string `yaml:"entry"`
-	Language      string `yaml:"language"`
-	AlwaysRun     bool   `yaml:"always_run"`
-	Verbose       bool   `yaml:"verbose"`
-	PassFilenames bool   `yaml:"pass_filenames"`
+	ID            string  `yaml:"id"`
+	Name          string  `yaml:"name"`
+	Entry         string  `yaml:"entry"`
+	Language      string  `yaml:"language"`
+	AlwaysRun     bool    `yaml:"always_run"`
+	Verbose       bool    `yaml:"verbose"`
+	PassFilenames bool    `yaml:"pass_filenames"`
+	Stages        []stage `yaml:"stages"`
 }
 
 type repo struct {
@@ -36,22 +53,20 @@ func pythonConfig() config {
 				Name: "local",
 				Hooks: []hook{
 					{
-						ID:            "flake8",
-						Name:          "flake8",
-						Entry:         "flake8",
-						Language:      "system",
-						AlwaysRun:     true,
-						Verbose:       true,
-						PassFilenames: false,
+						ID:        "flake8",
+						Name:      "flake8",
+						Entry:     "flake8",
+						Language:  "system",
+						AlwaysRun: true,
+						Stages:    []stage{Commit},
 					},
 					{
-						ID:            "pytest",
-						Name:          "pytest",
-						Entry:         "pytest -n auto --quiet",
-						Language:      "system",
-						AlwaysRun:     true,
-						Verbose:       true,
-						PassFilenames: false,
+						ID:        "pytest",
+						Name:      "pytest",
+						Entry:     "pytest -n auto --quiet",
+						Language:  "system",
+						AlwaysRun: true,
+						Stages:    []stage{Commit, Push},
 					},
 				},
 			},
@@ -71,8 +86,8 @@ func rustConfig() config {
 						Entry:         "cargo test",
 						Language:      "system",
 						AlwaysRun:     true,
-						Verbose:       true,
 						PassFilenames: false,
+						Stages:        []stage{Commit, Push},
 					},
 				},
 			},
@@ -92,8 +107,8 @@ func goConfig() config {
 						Entry:         "go test",
 						Language:      "system",
 						AlwaysRun:     true,
-						Verbose:       true,
 						PassFilenames: false,
+						Stages:        []stage{Commit, Push},
 					},
 				},
 			},
