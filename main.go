@@ -27,14 +27,16 @@ const (
 )
 
 type hook struct {
-	ID            string  `yaml:"id"`
-	Name          string  `yaml:"name"`
-	Entry         string  `yaml:"entry"`
-	Language      string  `yaml:"language"`
-	AlwaysRun     bool    `yaml:"always_run"`
-	Verbose       bool    `yaml:"verbose"`
-	PassFilenames bool    `yaml:"pass_filenames"`
-	Stages        []stage `yaml:"stages"`
+	ID            string   `yaml:"id"`
+	Name          string   `yaml:"name"`
+	Entry         string   `yaml:"entry"`
+	Language      string   `yaml:"language"`
+	AlwaysRun     bool     `yaml:"always_run"`
+	Verbose       bool     `yaml:"verbose"`
+	PassFilenames bool     `yaml:"pass_filenames"`
+	Stages        []stage  `yaml:"stages"`
+	Types         []string `yaml:"types"`
+	Files         string   `yaml:"files"`
 }
 
 type repo struct {
@@ -53,20 +55,39 @@ func pythonConfig() config {
 				Name: "local",
 				Hooks: []hook{
 					{
-						ID:        "flake8",
-						Name:      "flake8",
-						Entry:     "flake8",
-						Language:  "system",
-						AlwaysRun: true,
-						Stages:    []stage{Commit},
+						ID:       "cfn-lint",
+						Name:     "Lint cloudformation",
+						Entry:    "cfn-lint",
+						Language: "system",
+						Files:    "cloudformation.yml",
+						Stages:   []stage{Commit},
 					},
 					{
-						ID:        "pytest",
-						Name:      "pytest",
-						Entry:     "pytest -n auto --quiet",
-						Language:  "system",
-						AlwaysRun: true,
-						Stages:    []stage{Commit, Push},
+						ID:            "gitlab-yaml",
+						Name:          "Check gitlab yaml",
+						Entry:         "lab ci lint",
+						Language:      "system",
+						Files:         ".gitlab-ci.yml",
+						PassFilenames: false,
+						Stages:        []stage{Commit},
+					},
+					{
+						ID:            "flake8",
+						Name:          "flake8",
+						Entry:         "flake8",
+						Language:      "system",
+						PassFilenames: false,
+						Types:         []string{"python"},
+						Stages:        []stage{Commit},
+					},
+					{
+						ID:            "pytest",
+						Name:          "pytest",
+						Entry:         "pytest -n auto --quiet",
+						Language:      "system",
+						Types:         []string{"python"},
+						PassFilenames: false,
+						Stages:        []stage{Commit, Push},
 					},
 				},
 			},
