@@ -36,6 +36,15 @@ func pythonConfig() config {
 				Name: "local",
 				Hooks: []hook{
 					{
+						ID:            "flake8",
+						Name:          "flake8",
+						Entry:         "flake8",
+						Language:      "system",
+						AlwaysRun:     true,
+						Verbose:       true,
+						PassFilenames: false,
+					},
+					{
 						ID:            "pytest",
 						Name:          "pytest",
 						Entry:         "pytest -n auto --quiet",
