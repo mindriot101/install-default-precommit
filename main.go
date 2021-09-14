@@ -83,7 +83,7 @@ func pythonConfig() config {
 					{
 						ID:            "pytest",
 						Name:          "pytest",
-						Entry:         "pytest -n auto --quiet",
+						Entry:         "pytest --quiet",
 						Language:      "system",
 						Types:         []string{"python"},
 						PassFilenames: false,
