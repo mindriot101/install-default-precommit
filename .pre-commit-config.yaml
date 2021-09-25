@@ -5,6 +5,6 @@ repos:
     name: go test
     entry: go test
     language: system
-    always_run: true
-    verbose: true
+    always_run: false
+    verbose: false
     pass_filenames: false

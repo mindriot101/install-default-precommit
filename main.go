@@ -63,31 +63,28 @@ func pythonConfig() config {
 						Stages:   []stage{Commit},
 					},
 					{
-						ID:            "gitlab-yaml",
-						Name:          "Check gitlab yaml",
-						Entry:         "lab ci lint",
-						Language:      "system",
-						Files:         ".gitlab-ci.yml",
-						PassFilenames: false,
-						Stages:        []stage{Commit},
+						ID:       "gitlab-yaml",
+						Name:     "Check gitlab yaml",
+						Entry:    "lab ci lint",
+						Language: "system",
+						Files:    ".gitlab-ci.yml",
+						Stages:   []stage{Commit},
 					},
 					{
-						ID:            "flake8",
-						Name:          "flake8",
-						Entry:         "flake8",
-						Language:      "system",
-						PassFilenames: false,
-						Types:         []string{"python"},
-						Stages:        []stage{Commit},
+						ID:       "flake8",
+						Name:     "flake8",
+						Entry:    "flake8",
+						Language: "system",
+						Types:    []string{"python"},
+						Stages:   []stage{Commit},
 					},
 					{
-						ID:            "pytest",
-						Name:          "pytest",
-						Entry:         "pytest --quiet",
-						Language:      "system",
-						Types:         []string{"python"},
-						PassFilenames: false,
-						Stages:        []stage{Commit, Push},
+						ID:       "pytest",
+						Name:     "pytest",
+						Entry:    "pytest --quiet",
+						Language: "system",
+						Types:    []string{"python"},
+						Stages:   []stage{Commit, Push},
 					},
 				},
 			},
@@ -102,13 +99,30 @@ func rustConfig() config {
 				Name: "local",
 				Hooks: []hook{
 					{
-						ID:            "cargo test",
-						Name:          "cargo test",
-						Entry:         "cargo test",
-						Language:      "system",
-						AlwaysRun:     true,
-						PassFilenames: false,
-						Stages:        []stage{Commit, Push},
+						ID:       "cargo test",
+						Name:     "cargo test",
+						Entry:    "cargo test",
+						Language: "system",
+						Stages:   []stage{Commit, Push},
+					},
+				},
+			},
+		},
+	}
+}
+
+func rubyConfig() config {
+	return config{
+		Repos: []repo{
+			{
+				Name: "local",
+				Hooks: []hook{
+					{
+						ID:       "rspec",
+						Name:     "rspec",
+						Entry:    "rspec",
+						Language: "system",
+						Stages:   []stage{Commit},
 					},
 				},
 			},
@@ -123,13 +137,11 @@ func goConfig() config {
 				Name: "local",
 				Hooks: []hook{
 					{
-						ID:            "go test",
-						Name:          "go test",
-						Entry:         "go test",
-						Language:      "system",
-						AlwaysRun:     true,
-						PassFilenames: false,
-						Stages:        []stage{Commit, Push},
+						ID:       "go test",
+						Name:     "go test",
+						Entry:    "go test",
+						Language: "system",
+						Stages:   []stage{Commit, Push},
 					},
 				},
 			},
@@ -185,6 +197,8 @@ func main() {
 	switch language {
 	case "python":
 		cfg = pythonConfig()
+	case "ruby":
+		cfg = rubyConfig()
 	case "rust":
 		cfg = rustConfig()
 	case "go":
