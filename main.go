@@ -45,11 +45,13 @@ type repo struct {
 }
 
 type config struct {
-	Repos []repo `yaml:"repos"`
+	Repos    []repo `yaml:"repos"`
+	FailFast bool   `yaml:"fail_fast"`
 }
 
 func pythonConfig() config {
 	return config{
+		FailFast: true,
 		Repos: []repo{
 			{
 				Name: "local",
@@ -94,6 +96,7 @@ func pythonConfig() config {
 
 func rustConfig() config {
 	return config{
+		FailFast: true,
 		Repos: []repo{
 			{
 				Name: "local",
@@ -113,6 +116,7 @@ func rustConfig() config {
 
 func rubyConfig() config {
 	return config{
+		FailFast: true,
 		Repos: []repo{
 			{
 				Name: "local",
@@ -132,6 +136,7 @@ func rubyConfig() config {
 
 func goConfig() config {
 	return config{
+		FailFast: true,
 		Repos: []repo{
 			{
 				Name: "local",
