@@ -57,12 +57,13 @@ func pythonConfig() config {
 				Name: "local",
 				Hooks: []hook{
 					{
-						ID:       "cfn-lint",
-						Name:     "Lint cloudformation",
-						Entry:    "cfn-lint",
-						Language: "system",
-						Files:    "cloudformation.yml",
-						Stages:   []stage{Commit},
+						ID:            "cfn-lint",
+						Name:          "Lint cloudformation",
+						Entry:         "cfn-lint",
+						Language:      "system",
+						Files:         "cloudformation.yml",
+						Stages:        []stage{Commit},
+						PassFilenames: true,
 					},
 					{
 						ID:       "gitlab-yaml",
