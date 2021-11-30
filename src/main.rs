@@ -1,7 +1,10 @@
-use eyre::Result;
+use eyre::{Result, WrapErr};
+use std::path::PathBuf;
 use structopt::StructOpt;
 
-#[derive(Debug)]
+mod config;
+
+#[derive(Debug, Clone, Copy)]
 enum Language {
     Python,
     Rust,
@@ -30,7 +33,25 @@ struct Opts {
     force: bool,
 }
 
-fn main() {
+fn find_project_root() -> Result<PathBuf> {
+    Ok(PathBuf::from("."))
+}
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    tracing_subscriber::fmt::init();
+
     let opts = Opts::from_args();
-    dbg!(opts);
+
+    let project_root = find_project_root().wrap_err("finding project root")?;
+    let output_name = project_root.join(".pre-commit-config.yaml");
+    if output_name.is_file() && !opts.force {
+        eyre::bail!("file {:?} exists, not overwriting", output_name);
+    }
+
+    let config = config::Config::for_language(opts.language);
+    let mut outfile = std::fs::File::create(&output_name).wrap_err("creating output file")?;
+    serde_yaml::to_writer(&mut outfile, &config).wrap_err("serializing configuration")?;
+
+    Ok(())
 }
