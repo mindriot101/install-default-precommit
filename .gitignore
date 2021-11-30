@@ -1,1 +1,6 @@
 install-default-precommit
+
+
+# Added by cargo
+
+/target

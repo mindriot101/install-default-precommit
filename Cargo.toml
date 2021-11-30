@@ -1,0 +1,15 @@
+[package]
+name = "install-default-precommit"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+color-eyre = "0.5.11"
+eyre = "0.6.5"
+serde = { version = "1.0.130", features = ["derive"] }
+serde_yaml = "0.8.21"
+structopt = "0.3.25"
+tracing = "0.1.29"
+tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
