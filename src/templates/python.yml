@@ -17,7 +17,7 @@ repos:
           - python
       - id: black
         name: Check formatting
-        entry: black --check --target-version
+        entry: black --check --target-version py39
         pass_filenames: true
         types:
           - python
