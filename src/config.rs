@@ -10,6 +10,7 @@ pub(crate) struct Config {
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Repo {
     repo: String,
+    rev: Option<String>,
     hooks: Vec<Hook>,
 }
 
@@ -36,22 +37,24 @@ fn default_files() -> String {
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Hook {
     id: String,
-    name: String,
-    entry: String,
-    #[serde(default = "default_language")]
-    language: String,
-    #[serde(default = "default_false")]
-    always_run: bool,
-    #[serde(default = "default_false")]
-    verbose: bool,
-    #[serde(default = "default_false")]
-    pass_filenames: bool,
-    #[serde(default = "default_stages")]
-    stages: Vec<Stage>,
-    #[serde(default)]
-    types: Vec<String>,
-    #[serde(default = "default_files")]
-    files: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    entry: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    language: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    always_run: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    verbose: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pass_filenames: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    stages: Option<Vec<Stage>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    types: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    files: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

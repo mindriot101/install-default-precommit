@@ -31,6 +31,9 @@ struct Opts {
 
     #[structopt(short, long)]
     force: bool,
+
+    #[structopt(short, long)]
+    path: Option<PathBuf>,
 }
 
 fn find_project_root() -> Result<PathBuf> {
@@ -43,7 +46,11 @@ fn main() -> Result<()> {
 
     let opts = Opts::from_args();
 
-    let project_root = find_project_root().wrap_err("finding project root")?;
+    let project_root = match opts
+        .path {
+            Some(root) => root,
+            None =>  find_project_root().wrap_err("finding project root")?,
+        };
     let output_name = project_root.join(".pre-commit-config.yaml");
     if output_name.is_file() && !opts.force {
         eyre::bail!("file {:?} exists, not overwriting", output_name);
