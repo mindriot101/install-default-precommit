@@ -8,7 +8,9 @@ repos:
       - id: cfn-lint
         name: Lint cloudformation
         entry: cfn-lint
-        files: cloudformation.yml
+        files:
+          - cloudformation.yml
+          - template.yml
         pass_filenames: true
       - id: gitlab-yaml
         name: Check gitlab yaml
@@ -32,4 +34,3 @@ repos:
           - python
         stages:
           - commit
-          - push
