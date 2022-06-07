@@ -10,6 +10,7 @@ pub(crate) struct Config {
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Repo {
     repo: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     rev: Option<String>,
     hooks: Vec<Hook>,
 }
@@ -37,6 +38,8 @@ fn default_files() -> String {
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Hook {
     id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    args: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
