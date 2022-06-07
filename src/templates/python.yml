@@ -3,14 +3,13 @@ repos:
     rev: v4.2.0
     hooks:
       - id: name-tests-test
+        args: ["--django"]
   - repo: local
     hooks:
       - id: cfn-lint
         name: Lint cloudformation
         entry: cfn-lint
-        files:
-          - cloudformation.yml
-          - template.yml
+        files: cloudformation.yml
         pass_filenames: true
       - id: gitlab-yaml
         name: Check gitlab yaml
