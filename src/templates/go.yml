@@ -1,9 +1,24 @@
 repos:
   - repo: local
     hooks:
+      - id: go vet
+        language: system
+        name: go vet
+        entry: go vet ./...
+        pass_filenames: false
+        types:
+          - go
+      - id: staticcheck
+        language: system
+        name: staticcheck
+        entry: staticcheck ./...
+        pass_filenames: false
+        types:
+          - go
       - id: go test
+        language: system
         name: go test
-        entry: go test
-        stages:
-          - commit
-          - push
+        entry: go test ./...
+        pass_filenames: false
+        types:
+          - go
