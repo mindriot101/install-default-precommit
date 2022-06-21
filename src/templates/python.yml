@@ -1,9 +1,4 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
-    hooks:
-      - id: name-tests-test
-        args: ["--django"]
   - repo: local
     hooks:
       - id: cfn-lint
